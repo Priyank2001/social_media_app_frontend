@@ -1,0 +1,11 @@
+.__homepage{
+    display:flex;
+    flex-direction:column;
+    width:100%
+}
+
+.__all_posts{
+    flex:0.9;
+    margin:auto;
+    max-width:60vw;
+}
