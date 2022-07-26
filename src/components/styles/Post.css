@@ -2,12 +2,15 @@
     min-width: 300px;
     width: 500px;
     background-color: rgb(234, 181, 255);
+    
     border-radius: 20px;
     display: flex;
     padding: 5px;
     margin-top: 15px;
     margin-bottom: 25px;
     flex-direction: column;
+    
+
 }
 
 .__postHeader{
@@ -24,19 +27,19 @@
     position: relative;
     overflow: hidden;
     border-radius: 50%;
-    margin-left: 13px;
+    margin-left: 10px;
 }
 .__postHeaderPic{
     
     display: inline;
     margin: 0 auto;
-    margin-left: -25%; 
+
     height: 100%;
     width: auto;
     padding:0px 4px 5px 0px;
 }
 .__postHeaderUsername{
-    flex:0.8;
+    flex:0.9;
     padding: 20px;
 }
 
@@ -51,3 +54,4 @@
 .__post_caption_div{
     margin-left: 15px;
 }
+

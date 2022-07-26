@@ -34,18 +34,18 @@ export default function ExisitingUser({setUser}){
     }
     const handleClick = (event) => {
         event.preventDefault();
-        const url = 'http://localhost:8000/users';
+        const url = 'http://localhost:8000/signin';
         try{
-            const list = fetch(url,{
+            const str = `${url}?username=${state.username}&password=${state.password}`;
+            fetch(str,{
                 method:'GET',
             }).then(response => response.json()).then(json => {
-                for(let i in json){
-                    
-                    if(json[i].username === state.username && json[i].password === state.password){
-                        setUser(json[i]);
-                        console.log("Logged in")
-
-                    }
+                if(json == null){
+                    console.log("Wrong credentials")
+                }
+                else{
+                    setUser(json);
+                    // console.log("Logged in")
                 }
             })
             
