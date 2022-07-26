@@ -41,7 +41,7 @@ export default function ExisitingUser({setUser}){
             }).then(response => response.json()).then(json => {
                 for(let i in json){
                     
-                    if(json[i].username == state.username && json[i].password == state.password){
+                    if(json[i].username === state.username && json[i].password === state.password){
                         setUser(json[i]);
                         console.log("Logged in")
 
