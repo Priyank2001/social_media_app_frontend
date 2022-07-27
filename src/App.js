@@ -2,9 +2,11 @@ import Login from './components/Login'
 import './App.css';
 import { useState } from 'react';
 import Home from './components/Home'
+import Context  from './Context';
 function App() {
+  
   const [user,setUser] = useState({
-        id : 101,
+        userID : 1,
         name:"Priyank",
         email:"priyank@gmail.com",
         username:'priyank_2k',
@@ -15,7 +17,7 @@ function App() {
   return (
     <div className="App" style={{display:"flex",justifyContent:"center",height:"100vh"}}>
         {user === null && <Login setUser={setUser} />}
-        {user !== null && <Home setUser={setUser} user={user}/>}
+        {user !== null && <Home user={user} setUser={setUser} />}
     </div>
   );
 }

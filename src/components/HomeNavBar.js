@@ -1,3 +1,4 @@
+import zIndex from "@mui/material/styles/zIndex";
 import "./styles/HomeNavBar.css"
 export default function HomeNavBar(props){
     const homeNavBarDivStyle = {
@@ -5,19 +6,23 @@ export default function HomeNavBar(props){
         justifyContent:"space-between",
         alignItems:"center",
         height: "15%",
+        width:"100vw",
         padding:"15px",
         flex:"0.1",
-        
+        position:"sticky",
+        top:"0",
+        backgroundColor:"white",
+        zIndex:"999"
     }
-
+    const url = "https://icon-library.com/images/instagram-512_62607.png";
     return (
         <div style={homeNavBarDivStyle}>
             <img 
             style={{height:"100%"}}
-            src="https://www.hipsthetic.com/wp-content/uploads/2019/04/dotted-instagram-icon.jpg"
+            src={url}
             alt="123"
             ></img>  
-            <h3 style={{heigh:"100%"}}> Social Media </h3>
+            <h3 style={{height:"100%"}}> Social Media </h3>
             <div className="__homeNavBar_user_avatar">
                 <div className="__homeNavBar_user_image">
                     <img alt="userDP" src={props.user.display_picture}/>

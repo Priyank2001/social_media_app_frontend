@@ -1,5 +1,5 @@
 import { useState } from "react"
-
+import Context from "../Context"
 export default function ExisitingUser({setUser}){
     const style= {
         width:"100%",
@@ -34,18 +34,25 @@ export default function ExisitingUser({setUser}){
     }
     const handleClick = (event) => {
         event.preventDefault();
-        const url = 'http://localhost:8000/signin';
+        const url = `${Context().url}/signin`;
         try{
-            const str = `${url}?username=${state.username}&password=${state.password}`;
+            const str = `${url}`;
             fetch(str,{
-                method:'GET',
+                method:'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                    // 'Content-Type': 'application/x-www-form-urlencoded',
+                  },
+                body:JSON.stringify({
+                    username:state.username,
+                    password:state.password
+                })
             }).then(response => response.json()).then(json => {
                 if(json == null){
                     console.log("Wrong credentials")
                 }
                 else{
                     setUser(json);
-                    // console.log("Logged in")
                 }
             })
             

@@ -7,6 +7,11 @@
 .__all_posts{
     flex:0.9;
     margin:auto;
-    max-width:60vw;
-    top:"30%"
+    width:40vw;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+     min-width: 450px;
+    top:"20%";
+    background-color: rgb(234, 234, 234);
 }

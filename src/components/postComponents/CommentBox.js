@@ -1,11 +1,43 @@
+import { useState } from 'react'
 import Comment from './Comment'
+import Context from '../../Context';
+function CommentBox(props) {
+  const [inputComment,changeValue] = useState("");
+  const handleChangeValue = (event) => {
+    changeValue(event.target.value)
+  }
+  const handleCommentPost = async(event) => {
 
-function CommentBox() {
+      event.preventDefault();
+
+      if(inputComment === "")return;
+      try {
+        const url = `${Context().url}/post_comment`
+          await fetch(url, {
+            method:"POST",
+            body:JSON.stringify({
+              postID:props.postID,
+              text:inputComment,
+              userID:props.userID,
+              timestamp:"",
+              session_key:""
+            }),
+            headers:{
+              'Content-type':"application/json"
+            }
+          }).then(response => response.json()).then(json => {;props.fetchComments();})
+
+      } catch (error) {
+          console.log("Error while posting comments at postID",props.postID,error)
+      }
+      changeValue("")
+  }
   return (
     <div className="__comment_box" style={{display:"block"}}>
-        <Comment username="sands" content="Aur bhai Priyank"/>
+        {props.comment_array != null && props.comment_array.map((item,index) => {return <Comment key={index + 1} username={200 + item.authorID} content={item.text}/>})}
         <div style={{textAlign:"center"}}>
-        <input style={{width:"95%",border:"none",borderRadius:"5px",padding:"6px",margin:"6px"}} placeholder="Enter Your Comment"/>
+        <div><input value={inputComment} onChange={(e) => handleChangeValue(e) } style={{width:"80%",border:"none",borderRadius:"15px",padding:"7px",paddingLeft:"10px",margin:"6px"}} 
+        placeholder="Enter Your Comment"/><button onClick={(e) => handleCommentPost(e)}>Post  </button></div>
         </div>
     </div>
   )
