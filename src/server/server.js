@@ -1,5 +1,5 @@
 class User {
-    constructor(id,name,email,username,password,role = "",bio = "" , dp = ""){
+    constructor(id,name,email,username,password,role = "",bio = "" , dp = "https://st3.depositphotos.com/6672868/13701/v/600/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"){
         this.userID = id
         this.name = name
         this.email = email
@@ -172,6 +172,18 @@ listen(port,() => {
 console.log(`Started on PORT ${port}`);
 })
 
+app.post("/signup",(req,res) => {
+    const username = req.body.username;
+    const password = req.body.password;
+    const name = req.body.name;
+    const email = req.body.email;
+
+    users.addUser(new User(String(users.list.length + 1+110),name,email,username,password,"user",""))
+    res.send({message:"successfully added"})
+    // const bio = req.body.bio;
+    // const userDP = req.body.display_picture
+})
+
 app.get('/signin',(req,res) => {
     let username = req.headers.username;
     let password = req.headers.password;
@@ -184,7 +196,7 @@ app.get('/signin',(req,res) => {
                 username:i.username,
                 userID:i.userID,
                 display_picture:i.display_picture,
-                session_key:""
+                session_key:i.userID + "abc"
             });
             res.status(200);
             return ;
@@ -193,6 +205,10 @@ app.get('/signin',(req,res) => {
     res.json(null);
     res.status(400);
 })
+
+// app.delete("/signout",(req,res) => {
+
+// })
 
 app.get('/feed', (req,res) => {
     res.send(feed);
@@ -255,10 +271,8 @@ app.post('/post',async (req,res) => {
     let temp = new Post(String(feed.length+1),req.body.content_type,{text:req.body.content.text,imgSrc:req.body.content.imgSrc},[],[],req.body.timestamp)
     
     let us = findUser(req.body.userID)
-    // console.log(temp.authorID)
     temp.profile_head.display_picture = us.display_picture
     temp.profile_head.author_username = us.username
-    console.log(temp);
     feed.push(temp)
     res.send("you getting something")
 })

@@ -1,5 +1,5 @@
 import { useState } from "react"
-
+import Context from "../Context"
 
 function NewUser(){
     const style= {
@@ -83,27 +83,24 @@ function NewUser(){
                 }
             }) 
         }
-        var url = "http://localhost:8000/users";
-        var data = JSON.stringify({
-            name:state.name,
-            email:state.email,
-            username:state.username,
-            password:state.password
-        })
-        data = JSON.stringify({
-                "name":"Skrillex",
-                "email": "eve.holt@reqres.in",
-                "password": "pistol",            
-        })
-        // console.log(data,url)
         
+
         try
         {
             // let resJson 
-            console.log(data)
+            const url = `${Context().url}/signUp`
             fetch(url,{
             method:'POST',
-            body:data
+            headers:{
+                'Content-type':"application/json"
+            },
+            body: JSON.stringify({
+                name:state.name,
+                email:state.email,
+                username:state.username,
+                password:state.password
+            })
+            
             }).then(response =>  response.json()).then(json => console.log(json));
         }
         catch(err){
