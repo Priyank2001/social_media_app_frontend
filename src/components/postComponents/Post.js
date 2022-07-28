@@ -8,10 +8,12 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Context from "../../Context";
+import FavoriteIcon from '@mui/icons-material/Favorite';
 // import * as Vibrant from 'node-vibrant'
 export default function Post(props) {
     
     const [anchorEl, setAnchorEl] = useState(null);
+    const [isLiked,changeLike] = useState(false);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
       event.preventDefault();
@@ -19,7 +21,7 @@ export default function Post(props) {
     };
     const handleClose = (event) => {
         event.preventDefault();
-      setAnchorEl(null);
+        setAnchorEl(null);
     };
     const iconStyle={padding:"15px 0px 15px 15px"}
     const [commentBox,changeCommentBox] = useState({
@@ -61,7 +63,7 @@ export default function Post(props) {
         
     },
     handleReact: async() => {
-
+        changeLike(!isLiked);
     }
     }   
     const changeBoxState = (event) => {
@@ -81,7 +83,7 @@ export default function Post(props) {
             <div className="__postHeader">
             <div className="image-cropper"><img className="__postHeaderPic" src={props.display_picture} alt="userDP" /></div>
                 <h5  className="__postHeaderAuthorName">{props.author_name}</h5>
-                <MoreHorizIcon onClick={handleClick} style={{flex:0.1}} />
+                <MoreHorizIcon onClick={handleClick} style={{flex:0.1,paddingRight:"15px"}} />
                 <Menu
                   id="basic-menu"
                   anchorEl={anchorEl}
@@ -91,9 +93,7 @@ export default function Post(props) {
                     'aria-labelledby': 'basic-button',
                   }}
                 >
-                  <MenuItem onClick={handleClose}>Profile</MenuItem>
-                  <MenuItem onClick={handleClose}>My account</MenuItem>
-                  <MenuItem onClick={handleClose}>Logout</MenuItem>
+                  <MenuItem onClick={handleClose}>Report Post</MenuItem>
                 </Menu>
             </div>
             <Divider />
@@ -104,7 +104,7 @@ export default function Post(props) {
             <Divider />
             {props.type==="image" && <div className="__post_caption_div"><p style={{padding:"10px"}}>{props.caption}</p></div>}
             <div>
-                <FavoriteBorderIcon style={iconStyle} />
+                { isLiked ? <FavoriteIcon onClick={(e) => actions.handleReact(e)} style={iconStyle}/>: <FavoriteBorderIcon style={iconStyle} onClick={(e) => actions.handleReact(e)} />}
                 <CommentIcon onClick={(e) => changeBoxState(e)}  style={iconStyle}/>
             </div>
             <></>

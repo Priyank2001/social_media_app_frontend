@@ -32,12 +32,12 @@ export default function ExisitingUser({setUser}){
             })
         }
     }
-    const handleClick = (event) => {
+    const handleClick = async(event) => {
         event.preventDefault();
         const url = `${Context().url}/signin`;
         try{
             const str = `${url}`;
-            fetch(str,{
+            await fetch(str,{
                 method:'POST',
                 headers: {
                     'Content-Type': 'application/json'
