@@ -28,7 +28,7 @@ export default function HomeNavBar(props){
                     <img alt="userDP" src={props.user.display_picture}/>
                 </div>
                 <div className="__homeNavBar_username">   <h5>{props.user.username}</h5>
-                        <button className="__homeNavBar_signout_button" onClick={(e) => {e.preventDefault();props.setUser(null);}}>Sign out</button>
+                        <button className="__homeNavBar_signout_button" onClick={(e) => {e.preventDefault();window.localStorage.removeItem("isLoggedIn");window.localStorage.removeItem("user");props.setUser(null);}}>Sign out</button>
                 </div>
             </div>
         </div>

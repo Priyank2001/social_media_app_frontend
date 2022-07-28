@@ -1,6 +1,6 @@
 import { useState } from "react"
 import Context from "../Context"
-export default function ExisitingUser({setUser}){
+export default function ExisitingUser(){
     const style= {
         width:"100%",
         padding: "10px 0px 10px 0px",
@@ -49,7 +49,9 @@ export default function ExisitingUser({setUser}){
                     console.log("Wrong credentials")
                 }
                 else{
-                    setUser(json);
+                    window.localStorage.setItem("isLoggedIn",true)
+                    window.localStorage.setItem("user",JSON.stringify(json))
+                    window.location.reload();
                 }
             })
             
