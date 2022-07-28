@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Comment from './Comment'
 import Context from '../../Context';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 function CommentBox(props) {
   const [inputComment,changeValue] = useState("");
   const handleChangeValue = (event) => {
@@ -35,9 +36,12 @@ function CommentBox(props) {
   return (
     <div className="__comment_box" style={{display:"block"}}>
         {props.comment_array != null && props.comment_array.map((item,index) => { return <Comment key={index + 1} username={item.author_username} content={item.text}/>})}
-        <div style={{textAlign:"center"}}>
-        <div><input value={inputComment} onChange={(e) => handleChangeValue(e) } style={{width:"80%",border:"none",borderRadius:"15px",padding:"7px",paddingLeft:"10px",margin:"6px"}} 
-        placeholder="Enter Your Comment"/><button onClick={(e) => handleCommentPost(e)}>Post  </button></div>
+        <div style={{alignItems:"center",textAlign:"center",display:"flex",justifyContent:"space-around"}}>
+        <div style={{backgroundColor:"white",display:"flex",width:"98%",justifyContent:"space-around",margin:"10px",borderRadius:"20px"}}><input value={inputComment} onChange={(e) => handleChangeValue(e) } style={{outline:"none",width:"80%",border:"none",borderRadius:"15px",padding:"7px",paddingLeft:"10px",margin:"6px"}} 
+        placeholder="Enter Your Comment"/>
+        <div style={{display:"flex",flex:"0.1",alignItems:"center"}} onClick={(e) => handleCommentPost(e)} ><ArrowBackIcon /></div>
+        {/* <button style={{border:"none",margin:"5px"}}onClick={(e) => handleCommentPost(e)}>Post  </button> */}
+        </div>
         </div>
     </div>
   )
