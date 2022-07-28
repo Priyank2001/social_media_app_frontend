@@ -1,4 +1,3 @@
-import zIndex from "@mui/material/styles/zIndex";
 import "./styles/HomeNavBar.css"
 export default function HomeNavBar(props){
     const homeNavBarDivStyle = {
@@ -23,7 +22,7 @@ export default function HomeNavBar(props){
             src={url}
             alt="123"
             ></img>  
-            <h3 style={{height:"100%"}}> Social Media </h3>
+            <h3> Social Media </h3>
             <div className="__homeNavBar_user_avatar">
                 <div className="__homeNavBar_user_image">
                     <img alt="userDP" src={props.user.display_picture}/>

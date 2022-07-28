@@ -38,15 +38,12 @@ export default function ExisitingUser({setUser}){
         try{
             const str = `${url}`;
             await fetch(str,{
-                method:'POST',
+                method:'GET',
                 headers: {
-                    'Content-Type': 'application/json'
-                    // 'Content-Type': 'application/x-www-form-urlencoded',
-                  },
-                body:JSON.stringify({
+                    'Content-Type': 'application/json',
                     username:state.username,
                     password:state.password
-                })
+                  },
             }).then(response => response.json()).then(json => {
                 if(json == null){
                     console.log("Wrong credentials")

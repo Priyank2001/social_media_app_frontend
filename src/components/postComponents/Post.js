@@ -9,11 +9,16 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Context from "../../Context";
 import FavoriteIcon from '@mui/icons-material/Favorite';
+
 // import * as Vibrant from 'node-vibrant'
 export default function Post(props) {
     
     const [anchorEl, setAnchorEl] = useState(null);
-    const [isLiked,changeLike] = useState(false);
+    const [likes,changeLikes] = useState({
+        likesCount : 0,
+        usersWhoLiked: [],
+        isLiked: false
+    });
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
       event.preventDefault();
@@ -29,15 +34,7 @@ export default function Post(props) {
         isRendering: false,
         comment_array:[]
     })
-    const actions = {
-    fetchUsername : async(user_id) => {
-        try{
-            const url = `${Context().url}`
-        }
-        catch{
-
-        }
-    },
+    const actions = { 
     fetchComments : async () => {
         
         changeCommentBox((prev) => {return {
@@ -62,9 +59,50 @@ export default function Post(props) {
         }
         
     },
-    handleReact: async() => {
-        changeLike(!isLiked);
+    fetchReactors : async (type = "") => {
+        const url = `${Context().url}/post/${props.postID}/reactors`;
+        await fetch(url, {
+            method:"GET",
+            headers:{
+                'Content-type':'application/json',
+                'userid':props.userID,
+
+            },
+            
+
+        }).then(response => response.json()).then(
+            json => {
+                changeLikes((prev)=> {return {
+                    ...prev,
+                    usersWhoLiked:json.reactorList,
+                    likesCount:json.reactorList.length,
+                    isLiked:json.isLiked
+                }})
+            }
+        )
     }
+    ,
+    handleReact : async() => {
+        const url = `${Context().url}/post/${props.postID}/react`;
+        await fetch(url, {
+            method:"PATCH",
+            headers:{
+                'Content-type':'application/json',
+            },
+            body:JSON.stringify({
+                userID:props.userID
+            })
+
+        }).then(response => response.json()).then(json => {
+            changeLikes((prev) => {
+                return {
+                    ...prev,
+                    likesCount:json.likesCount,
+                    isLiked:json.isLiked
+                }
+            })
+        })
+    },
     }   
     const changeBoxState = (event) => {
         event.preventDefault();
@@ -76,6 +114,9 @@ export default function Post(props) {
         })
     }
     
+    useEffect(() => {
+        actions.fetchReactors("search")
+    },[])
     return (
         <div>
         {/* <div className="__post_blurredImage" style={__post_style}></div> */}
@@ -104,11 +145,13 @@ export default function Post(props) {
             <Divider />
             {props.type==="image" && <div className="__post_caption_div"><p style={{padding:"10px"}}>{props.caption}</p></div>}
             <div>
-                { isLiked ? <FavoriteIcon onClick={(e) => actions.handleReact(e)} style={iconStyle}/>: <FavoriteBorderIcon style={iconStyle} onClick={(e) => actions.handleReact(e)} />}
+                { likes.isLiked ? <FavoriteIcon  style={{padding:"15px 0px 15px 15px",color:"red"}} onClick={(e) => {actions.handleReact(e)}}  />: <FavoriteBorderIcon style={iconStyle} onClick={(e) => actions.handleReact(e)}  />}
+                
                 <CommentIcon onClick={(e) => changeBoxState(e)}  style={iconStyle}/>
+
             </div>
-            <></>
-            {commentBox.open ?  <CommentBox userID={props.userID} fetchComments={actions.fetchComments} postID={props.postID} comment_array={commentBox.comment_array} /> : <></>}
+            <h5 style={{paddingLeft:"20px"}}>{likes.likesCount}{" Likes"}</h5>
+            {commentBox.open ?  <CommentBox userID={props.userID} fetchComments={actions.fetchComments} postID={props.postID} comment_array={commentBox.comment_array} author_username={props.activeUsername}/> : <></>}
 
         </div>
         </div>

@@ -3,7 +3,7 @@ import LoginNav from './LoginNav'
 import NewUser from './NewUser'
 import ExisitingUser from './ExisitingUser'
 function Login({setUser}){
-    const [newUser,setNewUser] = useState(0);
+    const [newUser,setNewUser] = useState(1);
     return (
         <div className="__login_box" style={{width:"40vw",display:"flex",flexDirection:"column",margin:"0px",borderRadius:"100px"}}>
             <LoginNav setMode={setNewUser} />

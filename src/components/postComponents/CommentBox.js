@@ -18,8 +18,8 @@ function CommentBox(props) {
             body:JSON.stringify({
               postID:props.postID,
               text:inputComment,
-              userID:props.userID,
-              timestamp:"",
+              author_username:props.author_username,
+              timestamp:new Date().getTime(),
               session_key:""
             }),
             headers:{
@@ -34,7 +34,7 @@ function CommentBox(props) {
   }
   return (
     <div className="__comment_box" style={{display:"block"}}>
-        {props.comment_array != null && props.comment_array.map((item,index) => {return <Comment key={index + 1} username={200 + item.authorID} content={item.text}/>})}
+        {props.comment_array != null && props.comment_array.map((item,index) => { return <Comment key={index + 1} username={item.author_username} content={item.text}/>})}
         <div style={{textAlign:"center"}}>
         <div><input value={inputComment} onChange={(e) => handleChangeValue(e) } style={{width:"80%",border:"none",borderRadius:"15px",padding:"7px",paddingLeft:"10px",margin:"6px"}} 
         placeholder="Enter Your Comment"/><button onClick={(e) => handleCommentPost(e)}>Post  </button></div>

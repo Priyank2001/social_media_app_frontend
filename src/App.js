@@ -2,7 +2,6 @@ import Login from './components/Login'
 import './App.css';
 import { useState } from 'react';
 import Home from './components/Home'
-import Context  from './Context';
 function App() {
   
   // const [user,setUser] = useState({

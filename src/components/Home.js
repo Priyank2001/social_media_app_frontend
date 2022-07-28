@@ -5,7 +5,7 @@ import './styles/Home.css'
 import { useState ,useEffect } from "react";
 import PositionedMenu from "./PostionedMenu";
 import Context from "../Context";
-import { style } from "@mui/system";
+
 export default function Home(props){
 
     
@@ -49,24 +49,29 @@ export default function Home(props){
             {feed.isFetching ? <>...FETCHING</>:
                 <>
                 {feed.postList.slice(0).reverse().map((item,index)=>{
+                   
                     if(item.content_type === "image")
-                    return <Post display_picture="https://cdns-images.dzcdn.net/images/artist/0075f053766d7d0e12e4a7be22b85e6a/500x500.jpg"
-                    author_name = {item.username}
+                    return <Post display_picture={item.profile_head.display_picture}
+                    author_name = {item.profile_head.author_username}
                     key={index + 1}
                     type="image"
                     caption={item.content.text}
                     postID = {item.postID}
                     postSrc={item.content.imgSrc} 
                     userID={props.user.userID}
+                    activeUsername={props.user.username}
+                    likeCount = {item.likeCount}
                     />
                     else 
-                    return <Post display_picture="https://cdns-images.dzcdn.net/images/artist/0075f053766d7d0e12e4a7be22b85e6a/500x500.jpg"
-                    author_name = {item.username}
+                    return <Post display_picture={item.profile_head.display_picture}
+                    author_name = {item.profile_head.author_username}
                     key={index + 1}
                     type="text"
                     text={item.content.text}
                     postID = {item.postID}
                     userID={props.user.userID}
+                    activeUsername={props.user.username}
+                    likeCount = {item.likeCount}
                     />
                 })}
                 </>

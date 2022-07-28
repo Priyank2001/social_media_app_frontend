@@ -6,13 +6,9 @@ import MenuItem from '@mui/material/MenuItem';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import Context from '../Context';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import TextField from '@mui/material/TextField';    
-import FileBase64 from "react-file-base64"
-import Typography from '@mui/material/Typography';
-import { display } from '@mui/system';
-import { responsiveFontSizes } from '@mui/material';
+
 
 
 //**************************************************************************************** */
@@ -26,33 +22,41 @@ export default function PositionedMenu(props) {
     })
     
   const [showCard,changeShowCard] = useState({open:false,type:""});
-  const [file , setFile ]= useState(null)
+
   const [text, changeText] = useState("");
   const [inputImgUrl, changeInputImgUrl] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+    if(anchorEl != null) {setAnchorEl(null);}
+    else setAnchorEl(event.currentTarget);
     handleAddIconClick()
     
   };
   const handleClose = (key) => {
-    setAnchorEl(null);
-    handleAddIconClick()
+    
+   
     if(key === 1){
-        changeShowCard({open:true,type:"image"})
+      handleAddIconClick()
+      setAnchorEl(null);
+      changeShowCard({open:true,type:"image"})
+    }
+    else if(key === 2){
+      handleAddIconClick()
+      setAnchorEl(null);
+      changeShowCard({open:true,type:"text"})
     }
     else{
-        changeShowCard({open:true,type:"text"})
+      setAnchorEl(null);
+      handleAddIconClick()
     }
   };
   
-  const getFiles = (files) => {
-    setFile(files)
-    console.log(files)
-  }
-  const handlePost = async(type) => {
-    try{
+  
+  const handlePost = async() => {
+    if(showCard.type === "image")
+    {
+      try{
         const url = `${Context().url}/post`
         await fetch(url,{
             method:"POST",
@@ -73,8 +77,32 @@ export default function PositionedMenu(props) {
     catch(error){
         console.log("Error while posting post",error)
     }
+    }
+    else{
+      try{
+        const url = `${Context().url}/post`
+        await fetch(url,{
+            method:"POST",
+            headers:{
+                "Content-type":"application/json"
+            },
+            body:JSON.stringify({
+                content_type: "text" ,
+                content:{
+                    text:text,
+                    imgSrc:""
+                },
+                userID:props.activeUser.userID,
+                timestamp: new Date().getTime(),    
+            })
+        }).then(response => response.json()).then(json => console.log(json))
+    }
+    catch(error){
+        console.log("Error while posting post",error)
+    } 
+    }
     changeShowCard((prev) => {
-        return {...prev,
+        return {type:"",
         open:false}
     })
     props.fetchFeed()
@@ -108,18 +136,19 @@ export default function PositionedMenu(props) {
         <>
         {showCard.open && 
             <Card style={{position:"fixed",top:"50%",padding:"5px",backgroundColor:"#FFE5B4"}} sx={{ minWidth: 275 }}>
-                    <CardContent>
+                    <CardContent style={{width:"100%",display:"flex",justifyContent:"space-around"}}>
                     <TextField id="standard-basic" label="Caption" variant="standard" onChange={(e) => changeText(e.target.value)} />
                     </CardContent>
-                    <CardContent>
+                    {showCard.type==="image" && <CardContent style={{width:"100%",display:"flex",justifyContent:"space-around"}}>
                     <TextField id="standard-basic" label="Image url" variant="standard" onChange={(e) => changeInputImgUrl(e.target.value)} />    
-                    </CardContent>
-                    <CardContent style={{diplay:"flex",justifyContent:"space-around"}}>
-                        <Button onClick={(e) => handlePost("image")}>Post!</Button>
+                    </CardContent>}
+                    <CardContent style={{width:"100%",display:"flex",justifyContent:"space-around"}}>
+                        <Button onClick={(e) => handlePost()}>Post!</Button>
+                        <Button onClick={(e) => changeShowCard((prev) => {return {...prev,open:false}})}>Cancel</Button>
                     </CardContent>
             </Card>
         }
-       <div className="__addIcon_div" style={{display:"flex",position:"fixed",bottom:"10%",left:"10%"}} >
+       <div className="__addIcon_div" style={{display:"flex",position:"fixed",bottom:"10%",left:"10%",backgroundColor:"pink",padding:"10px",borderRadius:"25px"}} >
                 <AddCircleOutlineIcon style={addIconMenuState.style} fontSize="large" />
                 <Button style={{}} onClick={e => handleClick(e)}> Add Post </Button>
         </div>
