@@ -31,7 +31,7 @@ export default function Home(props){
     useEffect(() => {
         fetchFeed()
       
-    },[feed.isFetching] )
+    },[feed,feed.isFetching] )
     
 
 

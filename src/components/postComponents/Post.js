@@ -34,7 +34,7 @@ export default function Post(props) {
         isRendering: false,
         comment_array:[]
     })
-    const actions = { 
+    const action = { 
     fetchComments : async () => {
         
         changeCommentBox((prev) => {return {
@@ -68,8 +68,6 @@ export default function Post(props) {
                 'userid':props.userID,
 
             },
-            
-
         }).then(response => response.json()).then(
             json => {
                 changeLikes((prev)=> {return {
@@ -106,7 +104,7 @@ export default function Post(props) {
     }   
     const changeBoxState = (event) => {
         event.preventDefault();
-        actions.fetchComments(); 
+        action.fetchComments(); 
         changeCommentBox((prev) => {
             return {
                 open:!prev.open,
@@ -115,7 +113,7 @@ export default function Post(props) {
     }
     
     useEffect(() => {
-        actions.fetchReactors("search")
+        action.fetchReactors("search")
     },[])
     return (
         <div>
@@ -145,13 +143,13 @@ export default function Post(props) {
             <Divider />
             {props.type==="image" && <div className="__post_caption_div"><p style={{padding:"10px"}}>{props.caption}</p></div>}
             <div>
-                { likes.isLiked ? <FavoriteIcon  style={{padding:"15px 0px 15px 15px",color:"red"}} onClick={(e) => {actions.handleReact(e)}}  />: <FavoriteBorderIcon style={iconStyle} onClick={(e) => actions.handleReact(e)}  />}
+                { likes.isLiked ? <FavoriteIcon  style={{padding:"15px 0px 15px 15px",color:"red"}} onClick={(e) => {action.handleReact(e)}}  />: <FavoriteBorderIcon style={iconStyle} onClick={(e) => action.handleReact(e)}  />}
                 
                 <CommentIcon onClick={(e) => changeBoxState(e)}  style={iconStyle}/>
 
             </div>
             <h5 style={{paddingLeft:"20px"}}>{likes.likesCount}{" Likes"}</h5>
-            {commentBox.open ?  <CommentBox userID={props.userID} fetchComments={actions.fetchComments} postID={props.postID} comment_array={commentBox.comment_array} author_username={props.activeUsername}/> : <></>}
+            {commentBox.open ?  <CommentBox userID={props.userID} fetchComments={action.fetchComments} postID={props.postID} comment_array={commentBox.comment_array} author_username={props.activeUsername}/> : <></>}
 
         </div>
         </div>

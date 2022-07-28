@@ -246,17 +246,19 @@ app.get('/post/:postID/reactors' , (req,res) => {
 
 app.post('/post_comment',async (req,res) => {
     const postID = req.body.postID;
-    comment_array.push(new Comment(req.body.postID,req.body.timestamp,req.body.author_username,req.body.text,comment_array.length + 1))
+    comment_array.push(new Comment(req.body.postID,req.body.timestamp,req.body.author_username,req.body.text,comment_array.length + 1,likeCount = 0))
     
     res.send({response_message:"Posted Successfully"})
 })
 
 app.post('/post',async (req,res) => {
-    let temp = new Post(feed.length+1,req.body.userID,req.body.content_type,{text:req.body.content.text,imgSrc:req.body.content.imgSrc},[],[],req.body.timestamp)
+    let temp = new Post(String(feed.length+1),req.body.content_type,{text:req.body.content.text,imgSrc:req.body.content.imgSrc},[],[],req.body.timestamp)
     
-    let us = findUser(temp.authorID)
+    let us = findUser(req.body.userID)
+    // console.log(temp.authorID)
     temp.profile_head.display_picture = us.display_picture
     temp.profile_head.author_username = us.username
+    console.log(temp);
     feed.push(temp)
     res.send("you getting something")
 })
