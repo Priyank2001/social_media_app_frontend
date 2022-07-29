@@ -1,0 +1,29 @@
+.float-container {
+    border: 3px solid #fff;
+    height: 200px;
+    padding: 20px;
+}
+
+.float-child {
+    width: 40%;
+    float: left;
+    padding: 20px;
+    
+}  
+.image{
+    height: 120px;
+    width: 120px;
+    border-radius: 50%;
+}
+.bc
+{
+    color: red;
+
+}
+.bc1{
+    color: green;
+}
+.bc2
+{
+    color:blueviolet;
+}

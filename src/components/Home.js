@@ -2,13 +2,18 @@ import HomeNavBar from "./HomeNavBar"
 import Post from "./postComponents/Post"
 import Divider from '@mui/material/Divider';
 import './styles/Home.css'
+import Profile from "./profileComponents/Profile";
 export default function Home(props){
     return (
         <div className="__homepage">
             
             <HomeNavBar setUser={props.setUser} user={props.user}/>
-            <Divider />
-            <div className="__all_posts" >
+            
+            <Profile setUser={props.setUser} user={props.user}></Profile>
+
+            
+            <> 
+            { false && <div className="__all_posts" >
             <Post display_picture="https://cms.kerrang.com/images/2021/12/twenty-one-pilots-The-Outside-live-in-Mexico.jpg" 
                 username="twentyone_pilots"
                 key="101"
@@ -34,7 +39,13 @@ export default function Home(props){
             username="__slash__"
             postID="103"
             />
-            </div>
+            
+            
+               
+         </div>}
+         
+        </> 
+        
         </div>
     )
 }
