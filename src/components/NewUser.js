@@ -19,6 +19,10 @@ function NewUser(){
         matching_password: true,
     })
     const stateChangeRequest = ['Change Name','Change Username','Change Password','Change Repassword', 'Change Email']
+    const [error,setError] = useState({
+        found:false,
+        message:""
+    });
     const actions = (req,event) => {
         event.preventDefault();
         if(req === stateChangeRequest[0]){
@@ -88,7 +92,7 @@ function NewUser(){
         try
         {
             // let resJson 
-            const url = `${Context().url}/signUp`
+            const url = `${Context().url}/signup`
             fetch(url,{
             method:'POST',
             headers:{
@@ -101,7 +105,23 @@ function NewUser(){
                 password:state.password
             })
             
-            }).then(response =>  response.json()).then(json => console.log(json));
+            }).then(response =>  response.json()).then(json => {
+                if(json.status === false){
+                    setError({
+                        found: true,
+                        message:json.message
+                    })
+                }
+                else{
+                    setError({
+                        found: false,
+                        message:""
+                    })
+                    window.localStorage.setItem("isLoggedIn",true)
+                    window.localStorage.setItem("user",JSON.stringify(json))
+                    window.location.reload();
+                }
+            });
         }
         catch(err){
             console.log(err);
@@ -117,6 +137,7 @@ function NewUser(){
             <input style={style} onChange={(e) => actions(stateChangeRequest[3],e)} placeholder = "Re enter Your Password" type="password"></input>
             {state.matching_password === false && <h6>Password not matching</h6>}
             <button onClick={(e) => submitData(e)} style={{border:"none",padding:"15px"}}>Submit</button>
+            {error.found && <h4>{error.message}</h4>}
         </div>
     )
 

@@ -185,7 +185,7 @@ app.post("/signup",(req,res) => {
 })
 
 app.get('/signin',(req,res) => {
-    let username = req.headers.username;
+    let username = req.headers.cred;
     let password = req.headers.password;
     // res.send(users.list[0]);
     // return;
@@ -292,4 +292,39 @@ app.patch('/post/:postID/react',(req,res) =>{
     temp.likeID_array.push(userID);
     temp.likeCount++;
     res.send({success_message:"Succeesful react",likesCount:temp.likeCount,isLiked:true});
+})
+
+app.get("/user/:username" , (req,res) => {
+    const req_username = req.params.username;
+
+    users.list.map((item) => {
+        if(item.username === req_username){
+            res.send({
+                message:"user Found",
+                name:item.name,
+                email:item.email,
+                bio:"Hi there! My name is Priyank",
+
+            })
+            return ;
+        }
+    })
+    res.send({message:"user not found"});
+})
+
+app.get("/user/:username/posts" ,(req,res) => {
+    const username = req.params.username;
+    let arr = []
+    for(let i = 0 ; i < feed.length ; i++){
+        console.log(feed[i].profile_head.author_username , username)
+        if(feed[i].profile_head.author_username == username){
+            
+            arr.push(feed[i]);
+        }
+    }
+    //console.log(arr)
+    res.send({
+        message:"Users found successfully send",
+        feed:arr
+    })
 })

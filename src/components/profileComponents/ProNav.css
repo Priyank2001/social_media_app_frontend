@@ -11,13 +11,13 @@
     
 }  
 .image{
-    height: 120px;
-    width: 120px;
+    height: 170px;
+    width: 170px;
     border-radius: 50%;
 }
 .bc
 {
-    color: red;
+    color: rgb(0, 0, 0);
 
 }
 .bc1{

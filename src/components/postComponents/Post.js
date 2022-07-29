@@ -1,5 +1,5 @@
 import "../styles/Post.css"
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import CommentIcon from '@mui/icons-material/Comment';
 import Divider from '@mui/material/Divider';
@@ -14,12 +14,19 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 export default function Post(props) {
     
     const [anchorEl, setAnchorEl] = useState(null);
-    const [likes,changeLikes] = useState({
-        likesCount : 0,
+    const [like,changeLikes] = useState({
+        likeCount : props.likeCount,
         usersWhoLiked: [],
-        isLiked: false
+        isLiked: props.likedByCurrentUser
     });
+    const [commentBox,changeCommentBox] = useState({
+        open:false,
+        isRendering: false,
+        comment_array:[]
+    })
     const open = Boolean(anchorEl);
+
+    //*********************************************************************************** */
     const handleClick = (event) => {
       event.preventDefault();
       setAnchorEl(event.currentTarget);
@@ -28,12 +35,10 @@ export default function Post(props) {
         event.preventDefault();
         setAnchorEl(null);
     };
-    const iconStyle={padding:"15px 0px 15px 15px"}
-    const [commentBox,changeCommentBox] = useState({
-        open:false,
-        isRendering: false,
-        comment_array:[]
-    })
+    const iconStyle={padding:"15px 10px 15px 15px"}
+    
+
+    // comment_array => {id, timestamp, content , postId, profileHead}
     const action = { 
     fetchComments : async () => {
         
@@ -42,7 +47,7 @@ export default function Post(props) {
             isRendering:true
         }})
         try {
-            const url = `${Context().url}/${props.postID}/get_comment`
+            const url = `${Context().url}/post/${props.postId}/comments`
             await fetch(url,{
                 method:'GET',
                 headers:{
@@ -51,60 +56,70 @@ export default function Post(props) {
             }).then(response => response.json()).then(json => {
                 changeCommentBox((prev) => {return {
                     ...prev,
-                    comment_array:json.comment_arr
+                    isRendering:false,
+                    comment_array:json
                 }})
             })
         } catch (error) {
-            console.log("Error while fetching comments",props.postID,error);
+            console.log("Error while fetching comments",props.postId,error);
         }
         
     },
     fetchReactors : async (type = "") => {
-        const url = `${Context().url}/post/${props.postID}/reactors`;
+        const url = `${Context().url}/post/${props.postId}/reactors`;
         await fetch(url, {
             method:"GET",
             headers:{
                 'Content-type':'application/json',
-                'userid':props.userID,
-
             },
         }).then(response => response.json()).then(
             json => {
                 changeLikes((prev)=> {return {
                     ...prev,
-                    usersWhoLiked:json.reactorList,
-                    likesCount:json.reactorList.length,
-                    isLiked:json.isLiked
+                    usersWhoLiked:json,
                 }})
             }
         )
     }
     ,
     handleReact : async() => {
-        const url = `${Context().url}/post/${props.postID}/react`;
+        const url = `${Context().url}/post/${props.postId}/react`;
         await fetch(url, {
             method:"PATCH",
             headers:{
                 'Content-type':'application/json',
             },
             body:JSON.stringify({
-                userID:props.userID
+                currentUserId:props.userId
             })
 
         }).then(response => response.json()).then(json => {
-            changeLikes((prev) => {
-                return {
-                    ...prev,
-                    likesCount:json.likesCount,
-                    isLiked:json.isLiked
+            console.log(json);
+            if(json.status === true){
+                if(like.isLiked){
+                    changeLikes((prev) => {
+                        return {...prev,
+                            isLiked:false,
+                            likeCount: like.likeCount - 1
+                        }
+                    })
                 }
-            })
+                else{
+                    changeLikes((prev) => {
+                        return {...prev,
+                            isLiked:true,
+                            likeCount: like.likeCount + 1
+                        }
+                    })
+                }
+            }
         })
     },
     }   
     const changeBoxState = (event) => {
         event.preventDefault();
-        action.fetchComments(); 
+        if(commentBox.open === false)
+            action.fetchComments(); 
         changeCommentBox((prev) => {
             return {
                 open:!prev.open,
@@ -112,15 +127,13 @@ export default function Post(props) {
         })
     }
     
-    useEffect(() => {
-        action.fetchReactors("search")
-    },[])
+    // console.log(props.postId);
     return (
         <div>
         {/* <div className="__post_blurredImage" style={__post_style}></div> */}
         <div className="__post" >
             <div className="__postHeader">
-            <div className="image-cropper"><img className="__postHeaderPic" src={props.display_picture} alt="userDP" /></div>
+            <div className="image-cropper"><img className="__postHeaderPic" src={props.displayPictureURI === null ? "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png" : props.displayPictureURI} alt="userDP" /></div>
                 <h5  className="__postHeaderAuthorName">{props.author_name}</h5>
                 <MoreHorizIcon onClick={handleClick} style={{flex:0.1,paddingRight:"15px"}} className="__post_menu"/>
                 <Menu
@@ -136,22 +149,22 @@ export default function Post(props) {
                 </Menu>
             </div>
             <Divider />
-                {props.type==="image" && <img  className="__postPicture" src={props.postSrc} alt={props.postID}  />}
+                {props.type==="image" && <img  className="__postPicture" src={props.postSrc} alt={props.postId}  />}
                 {props.type==="text" && <div style={{margin:"20px",padding:"15px",borderRadius:"10px",textAlign:"center",backgroundColor:"black",color:"white"}}>
                     {props.text}
                 </div>}
             <Divider />
             {props.type==="image" && <div className="__post_caption_div"><p style={{padding:"10px"}}>{props.caption}</p></div>}
-            <div>
-                { likes.isLiked ? <FavoriteIcon  className="__like_icon" style={{padding:"15px 0px 15px 15px",color:"red"}} onClick={(e) => {action.handleReact(e)}}  />: <FavoriteBorderIcon style={iconStyle} className="__like_icon" onClick={(e) => action.handleReact(e)}  />}
-                
+            <div style={{display:"flex",alignItems:"center"}}>
+                { like.isLiked ? <FavoriteIcon  className="__like_icon" style={{padding:"15px 10px 15px 15px",color:"red"}} onClick={(e) => {action.handleReact(e)}}  />: <FavoriteBorderIcon style={iconStyle} className="__like_icon" onClick={(e) => action.handleReact(e)}  />}
+                {like.likeCount}
                 <CommentIcon onClick={(e) => changeBoxState(e)}  style={iconStyle} className="__like_icon"/>
+                {props.commentCount}
+            </div>
+            
+            {commentBox.open ?  <CommentBox userId={props.userId} fetchComments={action.fetchComments} postId={props.postId} comment_array={commentBox.comment_array} author_username={props.activeUsername}/> : <></>}
 
             </div>
-            <h5 style={{paddingLeft:"20px"}}>{likes.likesCount}{" Likes"}</h5>
-            {commentBox.open ?  <CommentBox userID={props.userID} fetchComments={action.fetchComments} postID={props.postID} comment_array={commentBox.comment_array} author_username={props.activeUsername}/> : <></>}
-
-        </div>
         </div>
     );
 }

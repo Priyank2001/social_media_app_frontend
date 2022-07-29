@@ -64,12 +64,10 @@ export default function PositionedMenu(props) {
                 "Content-type":"application/json"
             },
             body:JSON.stringify({
-                content_type: "image" ,
-                content:{
-                    text:text,
-                    imgSrc:inputImgUrl
-                },
-                userID:props.activeUser.userID,
+                contentType: 1 ,
+                imageCaption:text,
+                imageURL:inputImgUrl,
+                authorId:props.activeUser.userId,
                 timestamp: new Date().getTime(),    
             })
         }).then(response => response.json()).then(json => console.log(json))
@@ -87,12 +85,9 @@ export default function PositionedMenu(props) {
                 "Content-type":"application/json"
             },
             body:JSON.stringify({
-                content_type: "text" ,
-                content:{
-                    text:text,
-                    imgSrc:""
-                },
-                userID:props.activeUser.userID,
+                contentType: 0 ,
+                text:text,
+                authorId:props.activeUser.userId,
                 timestamp: new Date().getTime(),    
             })
         }).then(response => response.json()).then(json => console.log(json))
@@ -105,7 +100,6 @@ export default function PositionedMenu(props) {
         return {type:"",
         open:false}
     })
-    props.fetchFeed()
   }
   const handleAddIconClick = (e) => {
 
@@ -167,8 +161,8 @@ export default function PositionedMenu(props) {
           horizontal: 'left',
         }}
       >
-        <MenuItem onClick={(e)=>handleClose(1)}>Picture</MenuItem>
-        <MenuItem onClick={(e)=>handleClose(2)}>Text</MenuItem>
+        <MenuItem onClick={(e)=>{e.preventDefault();handleClose(1)}}>Picture</MenuItem>
+        <MenuItem onClick={(e)=>{e.preventDefault();handleClose(2)}}>Text</MenuItem>
       </Menu>
     </>
   );

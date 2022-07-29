@@ -41,12 +41,12 @@ export default function ExisitingUser(){
                 method:'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    username:state.username,
+                    cred:state.username,
                     password:state.password
                   },
             }).then(response => response.json()).then(json => {
-                if(json == null){
-                    console.log("Wrong credentials")
+                if(json.status === false){
+                    console.log(json)
                 }
                 else{
                     window.localStorage.setItem("isLoggedIn",true)

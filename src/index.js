@@ -3,11 +3,25 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-
+import Header from './components/profileComponents/Header';
+import Profile from './components/profileComponents/Profile'
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+} from "react-router-dom";
 const root = ReactDOM.createRoot(document.getElementById('root'));
+const isLoggedIn = window.localStorage.getItem("isLoggedIn");
+// const user = isLoggedIn === "true" ? JSON.parse(window.localStorage.getItem(user)) : null
 root.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter >
+      <Routes>
+        <Route path="/" element={<App />} />
+        <Route path="/header" element={<Header />} />
+        <Route path="/myProfile" element={isLoggedIn ==="true"  ? <Profile /> : <>PLease Log</>} />
+      </Routes>
+    </BrowserRouter>
   </React.StrictMode>
 );
 

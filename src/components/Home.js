@@ -18,9 +18,13 @@ export default function Home(props){
     });
     
     const fetchFeed = () => {
+        
         const url = `${Context().url}/feed`
         fetch(url, {
-          method:"GET"
+          method:"GET",
+          headers:{
+            currentUserId:props.user.userId
+          }
         }).then(response => response.json()).then(json => {
           setFeed({
           postList:json,
@@ -31,14 +35,13 @@ export default function Home(props){
     useEffect(() => {
         fetchFeed()
       
-    },[feed,feed.isFetching] )
+    },[feed] )
     
-
 
 
     return (
         <>
-        <PositionedMenu fetchFeed={fetchFeed} activeUser={props.user} />
+        <PositionedMenu  activeUser={props.user} />
         <div className="__homepage">
             
             <HomeNavBar user={props.user} setUser={props.setUser} />
@@ -49,29 +52,34 @@ export default function Home(props){
             {feed.isFetching ? <>...FETCHING</>:
                 <>
                 {feed.postList.slice(0).reverse().map((item,index)=>{
-                   
-                    if(item.content_type === "image")
-                    return <Post display_picture={item.profile_head.display_picture}
-                    author_name = {item.profile_head.author_username}
-                    key={index + 1}
+                    if(item.contentType === "IMAGE")
+                    return <Post displayPictureURI={item.profileHead.displayPictureURI}
+                    author_name = {item.profileHead.username}
+                    key={item.id}
                     type="image"
-                    caption={item.content.text}
-                    postID = {item.postID}
-                    postSrc={item.content.imgSrc} 
-                    userID={props.user.userID}
+                    caption={item.imageCaption}
+                    postId = {item.id}
+                    postSrc={item.imageURL} 
+                    userId={props.user.userId}
                     activeUsername={props.user.username}
                     likeCount = {item.likeCount}
+                    commentCount = {item.commentCount}
+                    timestamp = {item.timestamp}
+                    likedByCurrentUser = {item.likedByCurrentUser} 
                     />
                     else 
-                    return <Post display_picture={item.profile_head.display_picture}
-                    author_name = {item.profile_head.author_username}
-                    key={index + 1}
+                    return <Post displayPictureURI={item.profileHead.displayPictureURI}
+                    timestamp = {item.timestamp}
+                    author_name = {item.profileHead.username}
+                    key={item.id}
                     type="text"
-                    text={item.content.text}
-                    postID = {item.postID}
-                    userID={props.user.userID}
+                    text={item.text}
+                    postId = {item.id}
+                    userId={props.user.userId}
                     activeUsername={props.user.username}
                     likeCount = {item.likeCount}
+                    commentCount = {item.commentCount}
+                    likedByCurrentUser = {item.likedByCurrentUser}
                     />
                 })}
                 </>

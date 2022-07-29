@@ -1,29 +1,56 @@
 
 import { useEffect, useState } from "react";
-import ProNav from "./ProNav";
-import './Profile.css'
-
-
+// import './Profile.css'
+import Context from "../../Context"
+import HomeNavBar from "../HomeNavBar";
+import ProNav from "./ProNav"
 export default function Profile (props){
     let [Imagee, setImagee] = useState(null)
+    const [user,setUser] = useState(window.localStorage.getItem("user") == null ? null : JSON.parse(window.localStorage.getItem("user")) )
 
+    const [feed,setFeed] = useState([]);
     // 3. Create out useEffect function
-  useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/photos")
-    .then(response => response.json())
-        // 4. Setting *dogImage* to the image url that we received from the response above
-    .then(data => setImagee(data))
-  },[])
 
+    const fetchFeed = async() => {
+      try
+      { 
+        const url = `${Context().url}/user/${user.username}/posts`;
+        await fetch(url,{
+          method:"GET",
+          headers:{
+            currentUserId:user.userId
+          },
+        }).then(response =>response.json()).then(json => {
+            setFeed(json);
+            setImagee(true);
+        });}
+        catch(error){
+          console.log(error);
+        }
+
+    }
+  useEffect(() => {
+      fetchFeed();
+  },[])
+  
   return (
-    <div >
-        <div>
-            <ProNav  setUser={props.setUser} user={props.user}/>
-        </div>
-        <div className="profilediv"  >
-        {/* 5. Returning an img element for each url, again with the value of our src set to the image url */}
-    {Imagee && Imagee.map((im) => <img key={im.id} width={"200px"} height={"200px"}  src={im.url}></img>)}
-    </div>
+    <div style={{position:"relative",display:"flex",flexDirection:"column"}}>
+       <HomeNavBar user={user} setUser={setUser}/>
+       
+        <div style={{display:"flex",position:"relative"}}>
+
+            <ProNav user={user} setUser={setUser} />
+            <div  className="profilediv"  style={{flex:"0.7",display:"grid",gridTemplateColumns:" auto auto auto",}} >
+              {Imagee && feed.map((post,index) => {
+                console.log(post)
+                return <div key={post.id} style={{height:"200px",width:"200px",backgroundColor:"black",margin:"5px",display:"flex",alignItems:"center",textAlign:"center",justifyContent:"space-around"}}>
+                  {post.contentType === "IMAGE" && <img style={{height:"180px",width:"180px",padding:"10px"}} src={post.imageURL} />}
+                  {post.contentType === "TEXT"  && <p style={{overflow:"hidden",color:"white"}}>{post.text}</p>}
+                </div>
+              } )}
+            {/* {Imagee && Imagee.map((im) => <img key={im.id} width={"200px"} height={"200px"}  src={im.url}></img>)} */}
+            </div>
+        </div> 
     </div>
   );
 }
