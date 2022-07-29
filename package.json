@@ -6,6 +6,7 @@
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
     "@material-ui/icons": "^4.11.3",
+    "@material-ui/lab": "^4.0.0-alpha.61",
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.9.1",
     "@testing-library/jest-dom": "^5.16.4",
@@ -22,6 +23,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-file-base64": "^1.0.3",
+    "validator":"^13.7.0",
     "react-scripts": "4.0.3",
     "web-vitals": "^2.1.4"
   },
