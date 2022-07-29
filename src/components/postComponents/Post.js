@@ -122,7 +122,7 @@ export default function Post(props) {
             <div className="__postHeader">
             <div className="image-cropper"><img className="__postHeaderPic" src={props.display_picture} alt="userDP" /></div>
                 <h5  className="__postHeaderAuthorName">{props.author_name}</h5>
-                <MoreHorizIcon onClick={handleClick} style={{flex:0.1,paddingRight:"15px"}} />
+                <MoreHorizIcon onClick={handleClick} style={{flex:0.1,paddingRight:"15px"}} className="__post_menu"/>
                 <Menu
                   id="basic-menu"
                   anchorEl={anchorEl}
@@ -143,9 +143,9 @@ export default function Post(props) {
             <Divider />
             {props.type==="image" && <div className="__post_caption_div"><p style={{padding:"10px"}}>{props.caption}</p></div>}
             <div>
-                { likes.isLiked ? <FavoriteIcon  style={{padding:"15px 0px 15px 15px",color:"red"}} onClick={(e) => {action.handleReact(e)}}  />: <FavoriteBorderIcon style={iconStyle} onClick={(e) => action.handleReact(e)}  />}
+                { likes.isLiked ? <FavoriteIcon  className="__like_icon" style={{padding:"15px 0px 15px 15px",color:"red"}} onClick={(e) => {action.handleReact(e)}}  />: <FavoriteBorderIcon style={iconStyle} className="__like_icon" onClick={(e) => action.handleReact(e)}  />}
                 
-                <CommentIcon onClick={(e) => changeBoxState(e)}  style={iconStyle}/>
+                <CommentIcon onClick={(e) => changeBoxState(e)}  style={iconStyle} className="__like_icon"/>
 
             </div>
             <h5 style={{paddingLeft:"20px"}}>{likes.likesCount}{" Likes"}</h5>

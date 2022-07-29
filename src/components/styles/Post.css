@@ -50,3 +50,7 @@
     margin-left: 15px;
 }
 
+.__like_icon:hover,
+.__post_menu:hover{
+    cursor: pointer;
+}
