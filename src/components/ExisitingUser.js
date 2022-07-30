@@ -11,7 +11,8 @@ export default function ExisitingUser(){
     }
     const [state,setState] = useState({
         username:"",
-        password:""
+        password:"",
+        error:"",
     })
     const handleChange = (event,action)=> {
         event.preventDefault();
@@ -34,7 +35,7 @@ export default function ExisitingUser(){
     }
     const handleClick = async(event) => {
         event.preventDefault();
-        const url = `${Context().url}/signin`;
+        const url = `${Context().backendURL}/signin`;
         try{
             const str = `${url}`;
             await fetch(str,{
@@ -46,7 +47,13 @@ export default function ExisitingUser(){
                   },
             }).then(response => response.json()).then(json => {
                 if(json.status === false){
-                    console.log(json)
+                    console.log("Wrong Credentials")
+                    setState((prev) => {
+                        return {
+                            ...prev,
+                            error:json.message
+                        }
+                    })
                 }
                 else{
                     window.localStorage.setItem("isLoggedIn",true)
@@ -65,6 +72,7 @@ export default function ExisitingUser(){
         <div style={{display:"flex",flexDirection:"column"}}>
             <input onChange={(e) => handleChange(e,0)} style={style}placeholder = "Enter Your Username"></input>
             <input onChange={(e) => handleChange(e,1)} style={style}placeholder = "Enter Your Password" type="password"></input>
+            {state.error !== "" ? <h5>{state.error}</h5> : <></>}
             <button onClick={(e) => handleClick(e)} >Log in</button>
         </div>
     )

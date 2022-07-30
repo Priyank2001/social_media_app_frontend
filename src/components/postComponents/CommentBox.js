@@ -12,7 +12,7 @@ function CommentBox(props) {
       event.preventDefault();
       if(inputComment === "")return;
       try {
-        const url = `${Context().url}/comment`
+        const url = `${Context().backendURL}/comment`
           await fetch(url, {
             method:"POST",
             body:JSON.stringify({

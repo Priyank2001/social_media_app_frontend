@@ -92,7 +92,7 @@ function NewUser(){
         try
         {
             // let resJson 
-            const url = `${Context().url}/signup`
+            const url = `${Context().backendURL}/signup`
             fetch(url,{
             method:'POST',
             headers:{

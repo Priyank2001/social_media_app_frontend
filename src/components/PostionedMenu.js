@@ -57,7 +57,7 @@ export default function PositionedMenu(props) {
     if(showCard.type === "image")
     {
       try{
-        const url = `${Context().url}/post`
+        const url = `${Context().backendURL}/post`
         await fetch(url,{
             method:"POST",
             headers:{
@@ -78,7 +78,7 @@ export default function PositionedMenu(props) {
     }
     else{
       try{
-        const url = `${Context().url}/post`
+        const url = `${Context().backendURL}/post`
         await fetch(url,{
             method:"POST",
             headers:{

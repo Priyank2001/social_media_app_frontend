@@ -1,4 +1,6 @@
 import "./styles/HomeNavBar.css"
+import { useState } from "react"
+import DropDownMenu from "./DropDownMenu"
 export default function HomeNavBar(props){
     const homeNavBarDivStyle = {
         display:"flex",
@@ -15,23 +17,28 @@ export default function HomeNavBar(props){
         backgroundColor:"white",
         zIndex:"999"
     }
+    const [user,setUser] = useState(window.localStorage.getItem("user") == null ? null : JSON.parse(window.localStorage.getItem("user")) )
 
     const url = "https://icon-library.com/images/instagram-512_62607.png";
     return (
         <div style={homeNavBarDivStyle}>
+            <a href="http://localhost:3000/">
             <img 
             style={{height:"100px"}}
             src={url}
             alt="123"
             ></img>  
+            </a>
             <h3> Social Media </h3>
             <div className="__homeNavBar_user_avatar">
                 <div className="__homeNavBar_user_image">
-                    <img alt="userDP" src={(props.user.displayPictureURI === null || props.user.displayPictureURI === undefined)  ? "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png": props.user.displayPictureURI}/>
+                    <img alt="userDP" src={(user.displayPictureURI === null || user.displayPictureURI === undefined)  ? "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png": user.displayPictureURI}/>
                 </div>
-                <div className="__homeNavBar_username">   <h5>{props.user.username}</h5>
-                        <button className="__homeNavBar_signout_button" onClick={(e) => {e.preventDefault();window.localStorage.removeItem("isLoggedIn");window.localStorage.removeItem("user");props.setUser(null);}}>Sign out</button>
+                
+                <div className="__homeNavBar_username">
+                    <DropDownMenu username={user.username} />
                 </div>
+                
             </div>
         </div>
     )

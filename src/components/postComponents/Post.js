@@ -47,7 +47,7 @@ export default function Post(props) {
             isRendering:true
         }})
         try {
-            const url = `${Context().url}/post/${props.postId}/comments`
+            const url = `${Context().backendURL}/post/${props.postId}/comments`
             await fetch(url,{
                 method:'GET',
                 headers:{
@@ -66,7 +66,7 @@ export default function Post(props) {
         
     },
     fetchReactors : async (type = "") => {
-        const url = `${Context().url}/post/${props.postId}/reactors`;
+        const url = `${Context().backendURL}/post/${props.postId}/reactors`;
         await fetch(url, {
             method:"GET",
             headers:{
@@ -83,7 +83,7 @@ export default function Post(props) {
     }
     ,
     handleReact : async() => {
-        const url = `${Context().url}/post/${props.postId}/react`;
+        const url = `${Context().backendURL}/post/${props.postId}/react`;
         await fetch(url, {
             method:"PATCH",
             headers:{
@@ -127,14 +127,16 @@ export default function Post(props) {
         })
     }
     
-    // console.log(props.postId);
+    
     return (
         <div>
-        {/* <div className="__post_blurredImage" style={__post_style}></div> */}
+        
         <div className="__post" >
             <div className="__postHeader">
             <div className="image-cropper"><img className="__postHeaderPic" src={props.displayPictureURI === null ? "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png" : props.displayPictureURI} alt="userDP" /></div>
                 <h5  className="__postHeaderAuthorName">{props.author_name}</h5>
+                { (props.editPermission !== undefined || props.deletePermission != undefined) && 
+                <>
                 <MoreHorizIcon onClick={handleClick} style={{flex:0.1,paddingRight:"15px"}} className="__post_menu"/>
                 <Menu
                   id="basic-menu"
@@ -145,8 +147,11 @@ export default function Post(props) {
                     'aria-labelledby': 'basic-button',
                   }}
                 >
-                  <MenuItem onClick={handleClose}>Report Post</MenuItem>
+                  {props.editPermission   && <MenuItem onClick={handleClose}>Edit Post</MenuItem>}
+                  {props.deletePermission && <MenuItem onClick={handleClose}>Delete Post</MenuItem>}
                 </Menu>
+                </>
+                }
             </div>
             <Divider />
                 {props.type==="image" && <img  className="__postPicture" src={props.postSrc} alt={props.postId}  />}

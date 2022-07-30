@@ -3,18 +3,17 @@ import validator from "validator";
 import "./ProNav.css";
 import Context from "../../Context";
 export default function ProNav(props) {
-  const [name, setName] = useState(props.user.name);
-  const [username, setUName] = useState(props.user.username);
-  const [email, setEmail] = useState(props.user.email);
+  const [name, setName] = useState("");
+  const [username, setUName] = useState(props.username);
+  const [email, setEmail] = useState("");
   const [bio, setBio] = useState("");
   const [editp, setEidit] = useState(false);
   const [cdp, setDp] = useState(false);
-  const [displayPictureURI, setD_p] = useState("");
-  const userid = props.user.userId;
-
+  const [displayPictureURI, setdisplayPictureURI] = useState("");
+  // const userId = props.userId;
   useEffect(() => {
     try {
-      const url = `${Context().url}/user/${username}`;
+      const url = `${Context().backendURL}/user/${username}`;
       fetch(url, {
         method: "GET",
         headers: {
@@ -26,6 +25,7 @@ export default function ProNav(props) {
           setName(json.profile.name);
           setBio(json.profile.bio);
           setEmail(json.profile.email);
+          setdisplayPictureURI(json.profile.displayPictureURI);
         });
     } catch (error) {
       console.log(error);
@@ -33,42 +33,42 @@ export default function ProNav(props) {
   }, []);
   function handleSubmit(event) {
     event.preventDefault();
-    if (validator.isEmail(email)) {
-      props.setUser((prevState) => {
-        return {
-          ...prevState,
+    // if (validator.isEmail(email)) {
+    //   props.setUser((prevState) => {
+    //     return {
+    //       ...prevState,
 
-          username: username,
-          email: email,
-          name: name,
-        };
-      });
+    //       username: username,
+    //       email: email,
+    //       name: name,
+    //     };
+    //   });
 
-      var url = "http://localhost:8000/users";
-      var data = JSON.stringify({
-        id: userid,
-        name: name,
-        email: email,
-        username: username,
-        bio: bio,
-      });
-      // console.log(data,url)
+    //   var url = "http://localhost:8000/users";
+    //   var data = JSON.stringify({
+    //     id: userId,
+    //     name: name,
+    //     email: email,
+    //     username: username,
+    //     bio: bio,
+    //   });
+    //   // console.log(data,url)
 
-      try {
-        fetch(url, {
-          method: "POST",
-          body: data,
-        })
-          .then((response) => response.json())
-          .then((json) => console.log(json));
-      } catch (err) {
-        console.log(err);
-      }
+    //   try {
+    //     fetch(url, {
+    //       method: "POST",
+    //       body: data,
+    //     })
+    //       .then((response) => response.json())
+    //       .then((json) => console.log(json));
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
 
-      setEidit(false);
-    } else {
-      alert("Enter Valid Email");
-    }
+    //   setEidit(false);
+    // } else {
+    //   alert("Enter Valid Email");
+    // }
   }
   const actions = (req, event) => {
     event.preventDefault();
@@ -91,18 +91,18 @@ export default function ProNav(props) {
 
   function handleSubmit1(event) {
     event.preventDefault();
-    if (validator.isURL(displayPictureURI)) {
-      props.setUser((prevState) => {
-        return {
-          ...prevState,
-          displayPictureURI: displayPictureURI,
-        };
-      });
-      setD_p("");
-      setDp(false);
-    } else {
-      alert("Enter valid URL");
-    }
+    // if (validator.isURL(displayPictureURI)) {
+    //   props.setUser((prevState) => {
+    //     return {
+    //       ...prevState,
+    //       displayPictureURI: displayPictureURI,
+    //     };
+    //   });
+    //   setD_p("");
+    //   setDp(false);
+    // } else {
+    //   alert("Enter valid URL");
+    // }
   }
 
   return (
@@ -122,12 +122,11 @@ export default function ProNav(props) {
         className="image"
         style={{ objectFit: "cover" }}
         src={
-          props.user.displayPictureURI === null
+          displayPictureURI === null
             ? "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
-            : props.user.displayPictureURI
+            : displayPictureURI
         }
       ></img>
-      <br />
       {cdp === true && (
         <div className="float-child">
           <form onSubmit={handleSubmit1}>
@@ -146,7 +145,6 @@ export default function ProNav(props) {
       {editp === false && (
         <div className="float-child">
           <h4 className="bc">{name}</h4>
-          <br />
           <p className="">{bio}</p>
         </div>
       )}

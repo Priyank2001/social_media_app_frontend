@@ -12,14 +12,18 @@ import {
 } from "react-router-dom";
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const isLoggedIn = window.localStorage.getItem("isLoggedIn");
-// const user = isLoggedIn === "true" ? JSON.parse(window.localStorage.getItem(user)) : null
+// const user = window.localStorage.getItem("user") === undefined ? {
+//   username:""
+// }  : JSON.parse(window.localStorage.getItem("user")) 
+
+/// const user = isLoggedIn === "true" ? JSON.parse(window.localStorage.getItem(user)) : null
 root.render(
   <React.StrictMode>
     <BrowserRouter >
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/header" element={<Header />} />
-        <Route path="/myProfile" element={isLoggedIn ==="true"  ? <Profile /> : <>PLease Log</>} />
+        {/* <Route path={"/user/:username"} element={<Profile />} /> */}
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

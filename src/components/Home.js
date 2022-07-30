@@ -19,7 +19,7 @@ export default function Home(props){
     
     const fetchFeed = () => {
         
-        const url = `${Context().url}/feed`
+        const url = `${Context().backendURL}/feed`
         fetch(url, {
           method:"GET",
           headers:{
@@ -66,6 +66,8 @@ export default function Home(props){
                     commentCount = {item.commentCount}
                     timestamp = {item.timestamp}
                     likedByCurrentUser = {item.likedByCurrentUser} 
+                    editPermission = {item.editPermission}
+                    deletePermission = {item.deletePermission}
                     />
                     else 
                     return <Post displayPictureURI={item.profileHead.displayPictureURI}

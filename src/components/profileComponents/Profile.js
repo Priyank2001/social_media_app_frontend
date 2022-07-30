@@ -5,16 +5,19 @@ import Context from "../../Context"
 import HomeNavBar from "../HomeNavBar";
 import ProNav from "./ProNav"
 export default function Profile (props){
-    let [Imagee, setImagee] = useState(null)
+    let [Imagee, setImagee] = useState([])
     const [user,setUser] = useState(window.localStorage.getItem("user") == null ? null : JSON.parse(window.localStorage.getItem("user")) )
-
     const [feed,setFeed] = useState([]);
     // 3. Create out useEffect function
-
+    const path = window.location.pathname;
+  
+    const path_members = path.split("/")
+    const [username,setUsername] = useState(path_members[2]);
+    // console.log(username)
     const fetchFeed = async() => {
       try
       { 
-        const url = `${Context().url}/user/${user.username}/posts`;
+        const url = `${Context().backendURL}/user/${username}/posts`;
         await fetch(url,{
           method:"GET",
           headers:{
@@ -22,7 +25,7 @@ export default function Profile (props){
           },
         }).then(response =>response.json()).then(json => {
             setFeed(json);
-            setImagee(true);
+            // setImagee(true);
         });}
         catch(error){
           console.log(error);
@@ -32,23 +35,29 @@ export default function Profile (props){
   useEffect(() => {
       fetchFeed();
   },[])
-  
+  var temp = []
+  for(let i = 0 ; i < 40 ; i++)temp.push(0);
   return (
     <div style={{position:"relative",display:"flex",flexDirection:"column"}}>
-       <HomeNavBar user={user} setUser={setUser}/>
+       <HomeNavBar username={username} setUser={setUser}/>
        
         <div style={{display:"flex",position:"relative"}}>
 
-            <ProNav user={user} setUser={setUser} />
-            <div  className="profilediv"  style={{flex:"0.7",display:"grid",gridTemplateColumns:" auto auto auto",}} >
+            <ProNav  username={username} setUser={setUser} />
+            <div  className="profilediv"  style={{flex:"0.7",display:"grid",gridTemplateColumns:" auto auto auto auto",}} >
               {Imagee && feed.map((post,index) => {
-                console.log(post)
                 return <div key={post.id} style={{height:"200px",width:"200px",backgroundColor:"black",margin:"5px",display:"flex",alignItems:"center",textAlign:"center",justifyContent:"space-around"}}>
                   {post.contentType === "IMAGE" && <img style={{height:"180px",width:"180px",padding:"10px"}} src={post.imageURL} />}
                   {post.contentType === "TEXT"  && <p style={{overflow:"hidden",color:"white"}}>{post.text}</p>}
                 </div>
               } )}
-            {/* {Imagee && Imagee.map((im) => <img key={im.id} width={"200px"} height={"200px"}  src={im.url}></img>)} */}
+              {/* {
+                temp.map((item,index) => {
+                  return <div key={index+1} style={{height:"200px",width:"200px",backgroundColor:"black",margin:"5px",display:"flex",alignItems:"center",textAlign:"center",justifyContent:"space-around"}}>
+                    </div>
+                })
+              } */}
+            {Imagee  && Imagee.map((im) => <img key={im.id} width={"200px"} height={"200px"}  src={im.url}></img>)}
             </div>
         </div> 
     </div>
