@@ -8,9 +8,9 @@ function App() {
   const [user,setUser] = useState(window.localStorage.getItem("user") == null ? null : JSON.parse(window.localStorage.getItem("user")) )
   return (
     <div className="App" style={{display:"flex",justifyContent:"center",height:"100vh"}}>
-        {/* {isLoggedIn !== "true" && <Login />} */}
-        {/* {isLoggedIn === "true" && <Home user={user} setUser={setUser} />} */}
-        Hello there
+        {isLoggedIn !== "true" && <Login />}
+        {isLoggedIn === "true" && <Home user={user} setUser={setUser} />}
+        {/* Hello there */}
     </div>
   );
 }

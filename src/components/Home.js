@@ -5,12 +5,19 @@ import './styles/Home.css'
 import { useState ,useEffect } from "react";
 import PositionedMenu from "./PostionedMenu";
 import Context from "../Context";
-
+import BasicCard from "./postComponents/BasicCard";
 export default function Home(props){
 
     
 
-
+    const [editPostDetails,setEditPostDetails] = useState({
+        cardOpen:false,
+        type:"",
+        postId:"",
+        text:"",
+        caption:"",
+        imageURI:""
+  })
     
     const [feed,setFeed] = useState({
         postList:[],
@@ -42,6 +49,7 @@ export default function Home(props){
     return (
         <>
         <PositionedMenu  activeUser={props.user} />
+        {editPostDetails.cardOpen ? <div><BasicCard editPostDetails={editPostDetails} setEditPostDetails={setEditPostDetails}/></div>: <></>}
         <div className="__homepage">
             
             <HomeNavBar user={props.user} setUser={props.setUser} />
@@ -68,6 +76,8 @@ export default function Home(props){
                     likedByCurrentUser = {item.likedByCurrentUser} 
                     editPermission = {item.editPermission}
                     deletePermission = {item.deletePermission}
+                    editPostDetails={editPostDetails}
+                    setEditPostDetails={setEditPostDetails}
                     />
                     else 
                     return <Post displayPictureURI={item.profileHead.displayPictureURI}
@@ -82,6 +92,10 @@ export default function Home(props){
                     likeCount = {item.likeCount}
                     commentCount = {item.commentCount}
                     likedByCurrentUser = {item.likedByCurrentUser}
+                    editPermission = {item.editPermission}
+                    deletePermission = {item.deletePermission}
+                    editPostDetails={editPostDetails}
+                    setEditPostDetails={setEditPostDetails}
                     />
                 })}
                 </>

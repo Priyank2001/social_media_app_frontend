@@ -11,7 +11,7 @@ import {
   Route,
 } from "react-router-dom";
 const root = ReactDOM.createRoot(document.getElementById('root'));
-const isLoggedIn = window.localStorage.getItem("isLoggedIn");
+// const isLoggedIn = window.localStorage.getItem("isLoggedIn");
 // const user = window.localStorage.getItem("user") === undefined ? {
 //   username:""
 // }  : JSON.parse(window.localStorage.getItem("user")) 
@@ -23,7 +23,7 @@ root.render(
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/header" element={<Header />} />
-        {/* <Route path={"/user/:username"} element={<Profile />} /> */}
+        <Route path={"/user/:username"} element={<Profile />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
