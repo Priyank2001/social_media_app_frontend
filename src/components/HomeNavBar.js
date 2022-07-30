@@ -1,6 +1,7 @@
 import "./styles/HomeNavBar.css"
 import { useState } from "react"
 import DropDownMenu from "./DropDownMenu"
+import Context from "../Context"
 export default function HomeNavBar(props){
     const homeNavBarDivStyle = {
         display:"flex",
@@ -19,10 +20,10 @@ export default function HomeNavBar(props){
     }
     const [user,setUser] = useState(window.localStorage.getItem("user") == null ? null : JSON.parse(window.localStorage.getItem("user")) )
 
-    const url = "https://icon-library.com/images/instagram-512_62607.png";
+    const url = `${Context().appLogoImageURI}`;
     return (
         <div style={homeNavBarDivStyle}>
-            <a href="http://localhost:3000/">
+            <a href={`${Context().frontendURL}`}>
             <img 
             style={{height:"100px"}}
             src={url}

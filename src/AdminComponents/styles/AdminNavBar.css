@@ -1,0 +1,16 @@
+.__adminNavBar{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.__adminNavBarLogo{
+    height: 100px;
+}
+
+.__adminAvatarPic{
+    height:50px;
+    width:50px;
+    border-radius: 50%;
+    object-fit: cover;
+}

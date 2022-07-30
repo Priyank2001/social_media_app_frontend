@@ -4,7 +4,6 @@ import Context from "../../Context";
 import HomeNavBar from "../HomeNavBar";
 import ProNav from "./ProNav";
 export default function Profile(props) {
-  let [Imagee, setImagee] = useState([]);
   const [user, setUser] = useState(
     window.localStorage.getItem("user") == null
       ? null
@@ -53,8 +52,8 @@ export default function Profile(props) {
             gridTemplateColumns: " auto auto auto auto",
           }}
         >
-          {Imagee &&
-            feed.map((post, index) => {
+          {
+            feed.reverse().map((post, index) => {
               return (
                 <div
                   key={post.id}
@@ -71,6 +70,7 @@ export default function Profile(props) {
                 >
                   {post.contentType === "IMAGE" && (
                     <img
+                     alt = {post.id}
                       style={{
                         height: "180px",
                         width: "180px",
@@ -87,21 +87,7 @@ export default function Profile(props) {
                 </div>
               );
             })}
-          {/* {
-                temp.map((item,index) => {
-                  return <div key={index+1} style={{height:"200px",width:"200px",backgroundColor:"black",margin:"5px",display:"flex",alignItems:"center",textAlign:"center",justifyContent:"space-around"}}>
-                    </div>
-                })
-              } */}
-          {Imagee &&
-            Imagee.map((im) => (
-              <img
-                key={im.id}
-                width={"200px"}
-                height={"200px"}
-                src={im.url}
-              ></img>
-            ))}
+          
         </div>
       </div>
     </div>

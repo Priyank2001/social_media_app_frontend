@@ -10,7 +10,6 @@ export default function ProNav(props) {
   const [editp, setEidit] = useState(false);
   const [cdp, setDp] = useState(false);
   const [displayPictureURI, setdisplayPictureURI] = useState("");
-  // const userId = props.userId;
   useEffect(() => {
     try {
       const url = `${Context().backendURL}/user/${username}`;
@@ -33,42 +32,6 @@ export default function ProNav(props) {
   }, []);
   function handleSubmit(event) {
     event.preventDefault();
-    // if (validator.isEmail(email)) {
-    //   props.setUser((prevState) => {
-    //     return {
-    //       ...prevState,
-
-    //       username: username,
-    //       email: email,
-    //       name: name,
-    //     };
-    //   });
-
-    //   var url = "http://localhost:8000/users";
-    //   var data = JSON.stringify({
-    //     id: userId,
-    //     name: name,
-    //     email: email,
-    //     username: username,
-    //     bio: bio,
-    //   });
-    //   // console.log(data,url)
-
-    //   try {
-    //     fetch(url, {
-    //       method: "POST",
-    //       body: data,
-    //     })
-    //       .then((response) => response.json())
-    //       .then((json) => console.log(json));
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-
-    //   setEidit(false);
-    // } else {
-    //   alert("Enter Valid Email");
-    // }
   }
   const actions = (req, event) => {
     event.preventDefault();
@@ -91,18 +54,6 @@ export default function ProNav(props) {
 
   function handleSubmit1(event) {
     event.preventDefault();
-    // if (validator.isURL(displayPictureURI)) {
-    //   props.setUser((prevState) => {
-    //     return {
-    //       ...prevState,
-    //       displayPictureURI: displayPictureURI,
-    //     };
-    //   });
-    //   setD_p("");
-    //   setDp(false);
-    // } else {
-    //   alert("Enter valid URL");
-    // }
   }
 
   return (
@@ -119,6 +70,7 @@ export default function ProNav(props) {
       }}
     >
       <img
+        alt ="Profile Pic"
         className="image"
         style={{ objectFit: "cover" }}
         src={

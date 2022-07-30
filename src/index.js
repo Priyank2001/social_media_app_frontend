@@ -5,11 +5,14 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Header from './components/profileComponents/Header';
 import Profile from './components/profileComponents/Profile'
+import UpdateProfile from './components/UpdateProfile';
+import AdminPage from './AdminComponents/AdminPage';
 import {
   BrowserRouter,
   Routes,
   Route,
 } from "react-router-dom";
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 // const isLoggedIn = window.localStorage.getItem("isLoggedIn");
 // const user = window.localStorage.getItem("user") === undefined ? {
@@ -24,6 +27,8 @@ root.render(
         <Route path="/" element={<App />} />
         <Route path="/header" element={<Header />} />
         <Route path={"/user/:username"} element={<Profile />} />
+        <Route path={"/updateProfile"} element={<UpdateProfile />} />
+        <Route path={"/__admin__"} element={<AdminPage />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
