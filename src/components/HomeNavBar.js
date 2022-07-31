@@ -23,13 +23,13 @@ export default function HomeNavBar(props){
     const url = `${Context().appLogoImageURI}`;
     return (
         <div style={homeNavBarDivStyle}>
-            <a href={`${Context().frontendURL}`}>
+            
             <img 
             style={{height:"100px"}}
+            
             src={url}
             alt="123"
             ></img>  
-            </a>
             <h3> Social Media </h3>
             <div className="__homeNavBar_user_avatar">
                 <div className="__homeNavBar_user_image">
