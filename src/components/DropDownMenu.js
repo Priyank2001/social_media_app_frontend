@@ -12,7 +12,7 @@ export default function DropDownMenu(props) {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const frontendURL = Context().frontendURL;
+  const frontendURL = "";
 
   return (
     <div>
