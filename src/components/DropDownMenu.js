@@ -12,7 +12,7 @@ export default function DropDownMenu(props) {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const frontendURL = "";
+  const frontendURL = Context().frontendURL;
 
   return (
     <div>
@@ -34,9 +34,9 @@ export default function DropDownMenu(props) {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={(e) => {handleClose(e); window.location.assign(`${frontendURL}`) }}>Home</MenuItem>
-        <MenuItem onClick={(e) => {handleClose(e); window.location.assign(`${frontendURL}/user/${props.username}`) }}>My account</MenuItem>
-        <MenuItem onClick={(e) => {handleClose(e); window.localStorage.removeItem("isLoggedIn"); window.location.assign(`${Context().frontendURL}/`)}}>Logout</MenuItem>
+        <MenuItem onClick={(e) => {handleClose(e); window.location = `${frontendURL}` }}>Home</MenuItem>
+        <MenuItem onClick={(e) => {handleClose(e); window.location = `${frontendURL}/user/${props.username}`  }}>My account</MenuItem>
+        <MenuItem onClick={(e) => {handleClose(e); window.localStorage.removeItem("isLoggedIn"); window.location = `${frontendURL}/`}}>Logout</MenuItem>
       </Menu>
     </div>
   );
