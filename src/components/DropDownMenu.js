@@ -34,8 +34,8 @@ export default function DropDownMenu(props) {
         }}
       >
         <MenuItem onClick={(e) => {handleClose(e); }}>Profile</MenuItem>
-        <MenuItem onClick={(e) => {handleClose(e);  window.location.assign(`${Context().frontendURL}/user/${props.username}`) }}>My account</MenuItem>
-        <MenuItem onClick={(e) => {handleClose(e); window.localStorage.removeItem("isLoggedIn"); window.location.assign(`${Context().frontendURL}/`)}}>Logout</MenuItem>
+        <MenuItem onClick={(e) => {handleClose(e); window.location.assign(`${window.location. href}user/${props.username}`) }}>My account</MenuItem>
+        <MenuItem onClick={(e) => {handleClose(e); window.localStorage.removeItem("isLoggedIn"); window.location.assign(`${window.location.hostname}/`)}}>Logout</MenuItem>
       </Menu>
     </div>
   );
