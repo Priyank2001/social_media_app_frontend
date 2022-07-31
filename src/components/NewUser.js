@@ -1,19 +1,14 @@
 import { useState } from "react";
 import Context from "../Context";
 
-function ValidateEmail(input) {
-  var validRegex =
-    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-
-  if (input.value.match(validRegex)) {
-    return true;
-  } else {
-    alert("Invalid email address!");
-
-    document.form1.text1.focus();
-
-    return false;
+function ValidateEmail(mail) 
+{
+ if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail))
+  {
+    return (true)
   }
+    alert("You have entered an invalid email address!")
+    return (false)
 }
 
 function NewUser() {
